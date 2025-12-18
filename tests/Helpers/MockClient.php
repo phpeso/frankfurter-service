@@ -19,6 +19,7 @@ final readonly class MockClient
     public static function get(): Client
     {
         $client = new Client();
+        $client->setDefaultException(new \LogicException('Non-mocked URL'));
 
         $client->on(
             new RequestMatcher('/v1/latest', 'api.frankfurter.dev', ['GET'], ['https']),
@@ -69,6 +70,37 @@ final readonly class MockClient
                     case 'amount=1&base=XBT':
                     case 'amount=1&base=XBT&symbols=USD':
                     case 'amount=1&base=USD&symbols=XBT':
+                        return new Response(status: 404, body: fopen(__DIR__ . '/../data/not-found.json', 'r'));
+
+                    default:
+                        throw new \LogicException('Non-mocked URL: ' . $request->getUri());
+                }
+            },
+        );
+        $client->on(
+            new RequestMatcher('/v1/2025-06-13', 'api.frankfurter.dev', ['GET'], ['https']),
+            static function (RequestInterface $request) {
+                $query = $request->getUri()->getQuery();
+                switch ($query) {
+                    case 'amount=1&base=EUR':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/2025-06-13-EUR.json', 'r'));
+
+                    case 'amount=1&base=EUR&symbols=EUR%2CUSD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/2025-06-13-EUR-EUR,USD.json', 'r'));
+
+                    case 'amount=1&base=USD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/2025-06-13-USD.json', 'r'));
+
+                    case 'amount=1&base=USD&symbols=EUR%2CUSD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/2025-06-13-USD-EUR,USD.json', 'r'));
+
+                    case 'amount=1&base=PHP':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/2025-06-13-PHP.json', 'r'));
+
+                    case 'amount=1&base=PHP&symbols=EUR%2CUSD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/2025-06-13-PHP-EUR,USD.json', 'r'));
+
+                    case 'amount=1&base=XBT':
                         return new Response(status: 404, body: fopen(__DIR__ . '/../data/not-found.json', 'r'));
 
                     default:
