@@ -150,10 +150,14 @@ final readonly class FrankfurterService implements PesoServiceInterface
         ));
         $response = $this->httpClient->sendRequest($request);
 
-//        if ($response->getStatusCode() === 422) {
-//            // do not throw
-//            return $errorResponse($request, $response);
-//        }
+        if ($response->getStatusCode() === 404) {
+            $body = json_decode((string)$response->getBody(), flags: JSON_OBJECT_AS_ARRAY); // do not throw
+            $message = ($body ?: [])['message'] ?? '';
+            if ($message === 'not found') {
+                // do not throw
+                return $errorResponse($request, $response);
+            }
+        }
         if ($response->getStatusCode() !== 200) {
             throw HttpFailureException::fromResponse($request, $response);
         }

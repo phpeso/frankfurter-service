@@ -28,6 +28,24 @@ final readonly class MockClient
                     case 'amount=1&base=EUR':
                         return new Response(body: fopen(__DIR__ . '/../data/rates/latest-EUR.json', 'r'));
 
+                    case 'amount=1&base=USD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/latest-USD.json', 'r'));
+
+                    case 'amount=1&base=PHP':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/latest-PHP.json', 'r'));
+
+                    case 'amount=1&base=EUR&symbols=EUR%2CUSD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/latest-EUR-EUR,USD.json', 'r'));
+
+                    case 'amount=1&base=USD&symbols=EUR%2CUSD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/latest-USD-EUR,USD.json', 'r'));
+
+                    case 'amount=1&base=PHP&symbols=EUR%2CUSD':
+                        return new Response(body: fopen(__DIR__ . '/../data/rates/latest-PHP-EUR,USD.json', 'r'));
+
+                    case 'amount=1&base=XBT':
+                        return new Response(status: 404, body: fopen(__DIR__ . '/../data/not-found.json', 'r'));
+
                     default:
                         throw new \LogicException('Non-mocked URL: ' . $request->getUri());
                 }
