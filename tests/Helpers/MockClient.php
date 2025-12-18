@@ -100,7 +100,38 @@ final readonly class MockClient
                     case 'amount=1&base=PHP&symbols=EUR%2CUSD':
                         return new Response(body: fopen(__DIR__ . '/../data/rates/2025-06-13-PHP-EUR,USD.json', 'r'));
 
+                    case 'amount=1234.56&base=EUR':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/2025-06-13-1234.56-EUR.json', 'r'));
+
+                    case 'amount=1234.56&base=EUR&symbols=USD':
+                        return new Response(
+                            body: fopen(__DIR__ . '/../data/conv/2025-06-13-1234.56-EUR-USD.json', 'r'),
+                        );
+
+                    case 'amount=1234.56&base=EUR&symbols=USD%2CJPY%2CPHP%2CBYN':
+                        return new Response(
+                            body: fopen(__DIR__ . '/../data/conv/2025-06-13-1234.56-EUR-USD,JPY,PHP,BYN.json', 'r'),
+                        );
+
+                    case 'amount=12.3456&base=EUR':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/2025-06-13-12.3456-EUR.json', 'r'));
+
+                    case 'amount=1234.56&base=USD':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/2025-06-13-1234.56-USD.json', 'r'));
+
+                    case 'amount=1234.56&base=USD&symbols=CNY':
+                        return new Response(
+                            body: fopen(__DIR__ . '/../data/conv/2025-06-13-1234.56-USD-CNY.json', 'r'),
+                        );
+
+                    case 'amount=1234.56&base=CNY&symbols=PHP':
+                        return new Response(
+                            body: fopen(__DIR__ . '/../data/conv/2025-06-13-1234.56-CNY-PHP.json', 'r'),
+                        );
+
                     case 'amount=1&base=XBT':
+                    case 'amount=1&base=XBT&symbols=USD':
+                    case 'amount=1&base=USD&symbols=XBT':
                         return new Response(status: 404, body: fopen(__DIR__ . '/../data/not-found.json', 'r'));
 
                     default:
