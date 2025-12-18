@@ -43,7 +43,32 @@ final readonly class MockClient
                     case 'amount=1&base=PHP&symbols=EUR%2CUSD':
                         return new Response(body: fopen(__DIR__ . '/../data/rates/latest-PHP-EUR,USD.json', 'r'));
 
+                    case 'amount=1234.56&base=EUR':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/latest-1234.56-EUR.json', 'r'));
+
+                    case 'amount=1234.56&base=EUR&symbols=USD':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/latest-1234.56-EUR-USD.json', 'r'));
+
+                    case 'amount=1234.56&base=EUR&symbols=USD%2CJPY%2CPHP%2CBYN':
+                        return new Response(
+                            body: fopen(__DIR__ . '/../data/conv/latest-1234.56-EUR-USD,JPY,PHP,BYN.json', 'r'),
+                        );
+
+                    case 'amount=12.3456&base=EUR':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/latest-12.3456-EUR.json', 'r'));
+
+                    case 'amount=1234.56&base=USD':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/latest-1234.56-USD.json', 'r'));
+
+                    case 'amount=1234.56&base=USD&symbols=PHP':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/latest-1234.56-USD-PHP.json', 'r'));
+
+                    case 'amount=1234.56&base=PHP&symbols=CNY':
+                        return new Response(body: fopen(__DIR__ . '/../data/conv/latest-1234.56-PHP-CNY.json', 'r'));
+
                     case 'amount=1&base=XBT':
+                    case 'amount=1&base=XBT&symbols=USD':
+                    case 'amount=1&base=USD&symbols=XBT':
                         return new Response(status: 404, body: fopen(__DIR__ . '/../data/not-found.json', 'r'));
 
                     default:

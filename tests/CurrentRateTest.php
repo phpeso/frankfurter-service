@@ -29,27 +29,26 @@ final class CurrentRateTest extends TestCase
         $http = MockClient::get();
 
         $service = new FrankfurterService(cache: $cache, httpClient: $http);
-        $today = Calendar::parse('2025-12-17');
 
         $response = $service->send(new CurrentExchangeRateRequest('EUR', 'USD'));
         self::assertInstanceOf(ExchangeRateResponse::class, $response);
         self::assertEquals('1.1722', $response->rate->value);
-        self::assertEquals($today, $response->date);
+        self::assertEquals('2025-12-17', $response->date->toString());
 
         $response = $service->send(new CurrentExchangeRateRequest('USD', 'PHP'));
         self::assertInstanceOf(ExchangeRateResponse::class, $response);
         self::assertEquals('58.669', $response->rate->value);
-        self::assertEquals($today, $response->date);
+        self::assertEquals('2025-12-17', $response->date->toString());
 
         $response = $service->send(new CurrentExchangeRateRequest('PHP', 'JPY'));
         self::assertInstanceOf(ExchangeRateResponse::class, $response);
         self::assertEquals('2.652', $response->rate->value);
-        self::assertEquals($today, $response->date);
+        self::assertEquals('2025-12-17', $response->date->toString());
 
         $response = $service->send(new CurrentExchangeRateRequest('EUR', 'JPY')); // cached
         self::assertInstanceOf(ExchangeRateResponse::class, $response);
         self::assertEquals('182.38', $response->rate->value);
-        self::assertEquals($today, $response->date);
+        self::assertEquals('2025-12-17', $response->date->toString());
 
         self::assertCount(3, $http->getRequests()); // subsequent requests are cached
     }
@@ -62,23 +61,22 @@ final class CurrentRateTest extends TestCase
         $service = new FrankfurterService(symbols: [
             'EUR', 'USD',
         ], cache: $cache, httpClient: $http);
-        $today = Calendar::parse('2025-12-17');
 
         $response = $service->send(new CurrentExchangeRateRequest('EUR', 'USD'));
         self::assertInstanceOf(ExchangeRateResponse::class, $response);
         self::assertEquals('1.1722', $response->rate->value);
-        self::assertEquals($today, $response->date);
+        self::assertEquals('2025-12-17', $response->date->toString());
 
         $response = $service->send(new CurrentExchangeRateRequest('USD', 'EUR'));
         self::assertInstanceOf(ExchangeRateResponse::class, $response);
         self::assertEquals('0.8531', $response->rate->value);
-        self::assertEquals($today, $response->date);
+        self::assertEquals('2025-12-17', $response->date->toString());
 
         // any to symbols is ok
         $response = $service->send(new CurrentExchangeRateRequest('PHP', 'EUR'));
         self::assertInstanceOf(ExchangeRateResponse::class, $response);
         self::assertEquals('0.01454', $response->rate->value);
-        self::assertEquals($today, $response->date);
+        self::assertEquals('2025-12-17', $response->date->toString());
 
         // symbols to missing is not OK
         $response = $service->send(new CurrentExchangeRateRequest('EUR', 'PHP'));

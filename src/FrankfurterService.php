@@ -103,10 +103,15 @@ final readonly class FrankfurterService implements PesoServiceInterface
             RequestInterface $httpRequest,
             ResponseInterface $httpResponse,
         ) => new ErrorResponse(
-            ExchangeRateNotFoundException::fromRequest(
-                $request,
-                HttpFailureException::fromResponse($httpRequest, $httpResponse),
-            ),
+            $conversion ?
+                ConversionNotPerformedException::fromRequest(
+                    $request,
+                    HttpFailureException::fromResponse($httpRequest, $httpResponse),
+                ) :
+                ExchangeRateNotFoundException::fromRequest(
+                    $request,
+                    HttpFailureException::fromResponse($httpRequest, $httpResponse),
+                ),
         ));
 
         if ($rates instanceof ErrorResponse) {
@@ -116,7 +121,11 @@ final readonly class FrankfurterService implements PesoServiceInterface
         $rate = $rates['rates'][$request->quoteCurrency] ?? null;
 
         if ($rate === null) {
-            return new ErrorResponse(ExchangeRateNotFoundException::fromRequest($request));
+            return new ErrorResponse(
+                $conversion ?
+                    ConversionNotPerformedException::fromRequest($request) :
+                    ExchangeRateNotFoundException::fromRequest($request),
+            );
         }
 
         $date = Calendar::parseDateTimeString(
