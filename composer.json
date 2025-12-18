@@ -1,0 +1,54 @@
+{
+    "name": "peso/frankfurter-service",
+    "type": "library",
+    "license": "MIT",
+    "description": "Frankfurter.dev data provider for Peso",
+    "keywords": ["currency", "exchange rates", "peso", "phpeso", "frankfurter", "frankfurter.dev"],
+    "homepage": "https://phpeso.readthedocs.io/",
+    "authors": [{
+        "name": "Anton Smirnov",
+        "role": "developer",
+        "homepage": "https://sandfox.me/",
+        "email": "sandfox+phpeso@sandfox.me"
+    }],
+    "support": {
+        "issues": "https://github.com/phpeso/frankfurter-service/issues",
+        "source": "https://github.com/phpeso/frankfurter-service",
+        "docs": "https://phpeso.readthedocs.io/"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Peso\\Services\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Peso\\Services\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "peso/core": "^1.1",
+        "psr/http-client": "^1",
+        "psr/http-factory": "^1",
+        "psr/simple-cache": "^1 || ^2 || ^3"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.10",
+        "php-http/discovery": "^1.20",
+        "php-http/mock-client": "^1.6.1",
+        "phpunit/phpunit": "^11.5.46",
+        "psalm/phar": "^6.14",
+        "psy/psysh": ">=0.12.18",
+        "sandfox.dev/code-standard": "^1.2025.09.17",
+        "squizlabs/php_codesniffer": ">=4.0.1",
+        "symfony/cache": "^7.4.1"
+    }
+}
